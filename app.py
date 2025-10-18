@@ -1,14 +1,20 @@
-from flask import Flask
+from flask import Flask, render_template
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/index')
 def home():
-    return "Hello world!"
+    titulo = "Pagina de Inicio"
+    listado = ['Python','Flask','Jinja2','HTML','CSS']
+    return render_template("index.html",titulo=titulo, listado=listado)
 
-@app.route('/hola')
+@app.route('/OPB')
 def about():
-    return "Hola"
+    return render_template("calculo.html")
+
+@app.route('/distancia')
+def dist():
+    return render_template("distancia.html")
 
 @app.route('/user/<string:user>')
 def user(user):
@@ -34,6 +40,23 @@ def sumn(n1,n2):
 @app.route("/default/<string:dft>")
 def func2(dft="sss"):
     return "el valor de dft es: " + dft
+
+@app.route("/prueba")
+def func4():
+    return'''
+        <html>
+            <head>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+                <title>Pagina de prueba</title>
+            </head>
+            <body>
+                <h1>Hola esta es una pagina de prueba</h1>
+                <p>Esta pagina es para probar el retorno de HTML en Flask</p>
+            </body>
+        </html>
+    '''
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

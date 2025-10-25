@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+import math
 
 app = Flask(__name__)
 
@@ -8,12 +9,35 @@ def home():
     listado = ['Python','Flask','Jinja2','HTML','CSS']
     return render_template("index.html",titulo=titulo, listado=listado)
 
-@app.route('/OPB')
+@app.route('/calculo', methods = ['GET','POST'])
 def about():
+    if request.method == 'POST':
+        numero1 = request.form['numero1']
+        numero2 = request.form['numero2']
+        opcin = request.form['operacion']
+        if opcin == 'suma':
+            res = int(numero1) + int(numero2)
+        if opcin == 'resta':
+            res = int(numero1) - int(numero2)
+        if opcin == 'multiplicacion':
+            res = int(numero1) * int(numero2)
+        if opcin == 'division':
+            res = int(numero1) / int(numero2)
+        return render_template('calculo.html', res = res, numero1 = numero1, numero2 = numero2)
+
     return render_template("calculo.html")
 
-@app.route('/distancia')
+@app.route('/distancia', methods = ['GET','POST'])
 def dist():
+    if request.method == 'POST':
+        x1 = request.form['x1']
+        x2 = request.form['x2']
+        y1 = request.form['y1']
+        y2 = request.form['y2']
+
+        resu = math.sqrt(math.pow(int(x2) - int(x1), 2) + math.pow(int(y2) - int(y1), 2))
+        return render_template('distancia.html', resu = resu, x1 = x1, x2 = x2, y1 = y1, y2 = y2)
+
     return render_template("distancia.html")
 
 @app.route('/user/<string:user>')

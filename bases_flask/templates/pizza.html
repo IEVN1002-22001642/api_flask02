@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+{% import "_macros.html" as macro %}
+    {% block container %}
+    <h1>Pizzería - Registro de Pedido</h1>
+
+    {% if cliente_form %}
+        <h2>Registro de Cliente</h2>
+        <form method="POST">
+            {{ macro.render_field(cliente_form.nombre) }}
+            {{ macro.render_field(cliente_form.direccion) }}
+            {{ macro.render_field(cliente_form.telefono) }}
+            {{ macro.render_field(cliente_form.fecha) }}
+            <button type="submit">{{ cliente_form.submit.label }}</button>
+        </form>
+    {% endif %}
+
+    {% if pizza_form %}
+        <h2>Detalles del Pedido de Pizza</h2>
+        <form method="POST">
+            {{ macro.render_field(pizza_form.tamaño) }}
+            {{ macro.render_field(pizza_form.ingredientes) }}
+            {{ macro.render_field(pizza_form.cantidad) }}
+            <button type="submit">{{ pizza_form.submit.label }}</button>
+        </form>
+
+        <h3>Resumen de Pizzas en el Pedido:</h3>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Tamaño</th>
+                    <th>Ingredientes</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pizza in cliente_data.pizzas %}
+                    <tr>
+                        <td>{{ pizza.tamaño }}</td>
+                        <td>{{ pizza.ingredientes }}</td>
+                        <td>{{ pizza.cantidad }}</td>
+                        <td>${{ pizza.subtotal }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <form method="POST" action="{{ url_for('terminar') }}">
+            <button type="submit">Terminar Pedido</button>
+        </form>
+    {% endif %}
+
+    {% if ventas %}
+        <h2>Ventas Acumuladas</h2>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Fecha</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for venta in ventas %}
+                    <tr>
+                        <td>{{ venta.nombre }}</td>
+                        <td>{{ venta.direccion }}</td>
+                        <td>{{ venta.telefono }}</td>
+                        <td>{{ venta.fecha }}</td>
+                        <td>${{ venta.total }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    
+{% endblock %}

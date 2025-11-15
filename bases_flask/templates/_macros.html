@@ -27,3 +27,13 @@
 {% endif %}
 
 {% endmacro %}
+
+{% macro render_field(field) %}
+  <div>
+    <label for="{{ field.id }}">{{ field.label }}</label>
+      {{ field() }}
+      {% for error in field.errors %}
+      <li style="color: red;">{{ error }}</li>
+      {% endfor %}
+  </div>
+{% endmacro %}
